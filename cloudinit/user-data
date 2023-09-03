@@ -11,6 +11,7 @@ users:
     lock_passwd: true
 ssh_pwauth: true
 ssh_authorized_keys: []
+package_upgrade: true
 runcmd:
   # Set SSH authorized_keys
   - su - masaya -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
