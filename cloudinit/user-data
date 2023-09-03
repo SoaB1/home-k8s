@@ -1,7 +1,6 @@
 #cloud-config
-
-# Hostname
 hostname: master-0
+timezone: Asia/Tokyo
 
 # Username
 users:
@@ -9,4 +8,4 @@ users:
     groups: [adm, cdrom, sudo, dip, plugdev, lxd]
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
-    
+    lock_passwd: true
