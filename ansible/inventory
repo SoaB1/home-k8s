@@ -5,3 +5,9 @@ worker-1 ansible_host=192.168.0.82
 
 [k8s-nodes:vars]
 ansible_ssh_pass=zaq12wsx
+
+[k8s-nodes-ssh:children]
+k8s-nodes
+
+[k8s-nodes-ssh:vars]
+ansible_ssh_private_key_file=/home/k8s-user/.ssh/id_ed25519
