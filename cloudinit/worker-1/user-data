@@ -1,0 +1,24 @@
+#cloud-config
+hostname: worker-1
+timezone: Asia/Tokyo
+
+# Username
+users:
+  - name: masaya
+    groups: [adm, cdrom, sudo, dip, plugdev, lxd]
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    lock_passwd: true
+  - name: k8s-user
+    groups: [adm, cdrom, sudo, dip, plugdev, lxd]
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    lock_passwd: true
+ssh_pwauth: true
+ssh_authorized_keys: []
+package_upgrade: true
+runcmd:
+  # Set SSH authorized_keys
+  - su - masaya -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
+  - su - masaya -c "curl -L https://github.com/SoaB1.keys >> ~/.ssh/authorized_keys"
+  - su - masaya -c "chmod 600 ~/.ssh/authorized_keys"
