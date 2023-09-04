@@ -9,6 +9,11 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     lock_passwd: true
+  - name: k8s-user
+    groups: [adm, cdrom, sudo, dip, plugdev, lxd]
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    lock_passwd: true
 ssh_pwauth: true
 ssh_authorized_keys: []
 package_upgrade: true
