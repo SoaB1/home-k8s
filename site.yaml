@@ -3,3 +3,8 @@
   hosts: k8s-ansible-leader-host
   roles:
     - 01-generate-ssh-key
+
+- name: 02-copy-ssh-key
+  hosts: k8s-nodes
+  roles:
+    - 02-copy-ssh-key
