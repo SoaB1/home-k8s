@@ -1,7 +1,7 @@
 ---
 all:
   vars:
-    ansible_user: ansible
+    ansible_user: k8s-user
     ansible_password: zaq12wsx
   children:
     k8s-nodes:
