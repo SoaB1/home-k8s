@@ -14,3 +14,7 @@ all:
           ansible_host: 192.168.0.82
       vars:
         ansible_ssh_private_key_file: /home/k8s-user/.ssh/id_ed25519
+    k8s-ansible-leader-host:
+      hosts:
+        master-0:
+          ansible_host: 192.168.0.80
