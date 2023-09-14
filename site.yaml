@@ -1,5 +1,5 @@
 ---
 - name: 01-generate-ssh-key
-  hosts: localhost
+  hosts: k8s-ansible-leader-host
   roles:
     - 01-generate-ssh-key
