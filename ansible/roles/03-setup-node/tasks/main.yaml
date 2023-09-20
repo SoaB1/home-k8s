@@ -1,4 +1,14 @@
 ---
+- name: Get Arch variables
+  shell:
+    cmd: dpkg --print-architecture
+  register: arch-results
+
+- name: Get Ubuntu release variables
+  shell:
+    cmd: lsb_release -cs
+  register: release-results
+
 - name: Configure modules conf
   become: true
   ansible.builtin.lineinfile:
@@ -15,6 +25,7 @@
     modprobe br_netfilter
 
 - name: Configure Kernel
+  become: true
   ansible.posix.sysctl:
     sysctl_file: /etc/sysctl.d/k8s.conf
     name: "{{ item.key }}"
@@ -27,6 +38,31 @@
     - { key: "net.bridge.bridge-nf-call-ip6tables", value: "1" }
     - { key: "net.ipv4.ip_forward", value: "1" }
 
-- name: Install containerd
+- name: Install dependency
+  become: true
   ansible.builtin.apt:
+    state: present
     update_cache: yes
+    name: "{{ item }}"
+  with_items:
+    - "apt-transport-https"
+    - "curl"
+    - "gnupg2"
+
+- name: Create keyrings directory
+  become: true
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+
+- name: Add Docker GPG key
+  become: true
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg 
+    dest: /etc/apt/keyrings/docker.gpg
+
+- name: Add Docker apt repository
+  become: true
+  apt_repository:
+    repo:  deb [arch={{ arch-results }} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ release-results }} stable
+    state: present
