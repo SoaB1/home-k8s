@@ -10,7 +10,7 @@
     key: "{{ lookup('file', '/home/k8s-user/.ssh/id_ed25519.pub') }}"
 
 - name: Configure sshd_config
-  become: yes
+  become: true
   lineinfile:
     path: "/etc/ssh/sshd_config"
     regex: "^(#)?{{item.key}}"
@@ -21,5 +21,5 @@
     - { key: "PasswordAuthentication", value: "no" } 
 
 - name: restart sshd
-  become: yes
+  become: true
   service: name=sshd state=restarted

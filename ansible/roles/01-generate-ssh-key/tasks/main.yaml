@@ -1,9 +1,9 @@
 - name: Create Directory ~/.ssh
-  become: yes
+  become: true
   file: dest=/home/k8s-user/.ssh state=directory state=directory owner=k8s-user group=k8s-user
 
 - name: Generate SSH Key
-  become: yes
+  become: true
   openssh_keypair: 
     path: /home/k8s-user/.ssh/id_ed25519
     type: ed25519

@@ -1,5 +1,6 @@
+---
 - name: Configure modules conf
-  become: yes
+  become: true
   ansible.builtin.lineinfile:
     path: /etc/modules-load.d/containerd.conf
     line: {{ item }}
@@ -8,7 +9,7 @@
     - 'br_netfilter'
 
 - name: Add modules
-  become: yes
+  become: true
   shell: |
     modprobe overlay
     modprobe br_netfilter
@@ -25,3 +26,7 @@
     - { key: "net.bridge.bridge-nf-call-iptables", value: "1" }
     - { key: "net.bridge.bridge-nf-call-ip6tables", value: "1" }
     - { key: "net.ipv4.ip_forward", value: "1" }
+
+- name: Install containerd
+  ansible.builtin.apt:
+    update_cache: yes
