@@ -41,3 +41,13 @@
     - { key: "kubelet", value: "1.27.1-00" }
     - { key: "kubeadm", value: "1.27.1-00" }
     - { key: "kubectl", value: "1.27.1-00" }
+
+- name: Hold Kubernetes packages
+  become: true
+  dpkg_secletions:
+    name: "{{ item }}"
+    selection: hold
+  with_items: 
+    - "kubelet"
+    - "kubeadm"
+    - "kubectl"
