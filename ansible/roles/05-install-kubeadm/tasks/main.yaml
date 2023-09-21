@@ -18,3 +18,26 @@
     - { key: "kernel.keys.root_maxkeys", value: "1000000" }
     - { key: "kernel.keys.root_maxbytes", value: "25000000" }
     - { key: "net.ipv4.conf.*.rp_filter", value: "0" }
+
+- name: Add Kubernetes GPG key
+  become: true
+  get_url:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    dest: /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+
+- name: Add Kubernetes apt repository
+  become: true
+  apt_repository:
+    repo:  deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+
+- name: Install containerd
+  become: true
+  apt:
+    state: present
+    update_cache: yes
+    name: "{{ item.key }}={{ item.value }}"
+  loop: 
+    - { key: "kubelet", value: "1.27.1-00" }
+    - { key: "kubeadm", value: "1.27.1-00" }
+    - { key: "kubectl", value: "1.27.1-00" }
