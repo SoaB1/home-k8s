@@ -31,7 +31,7 @@
     repo:  deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
     state: present
 
-- name: Install containerd
+- name: Install Kubernetes packages
   become: true
   apt:
     state: present
