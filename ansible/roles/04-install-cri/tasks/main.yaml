@@ -1,0 +1,35 @@
+---
+- name: Get Arch variables
+  shell:
+    cmd: dpkg --print-architecture
+  register: arch-results
+
+- name: Get Ubuntu release variables
+  shell:
+    cmd: lsb_release -cs
+  register: release-results
+
+- name: Create keyrings directory
+  become: true
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+
+- name: Add Docker GPG key
+  become: true
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg 
+    dest: /etc/apt/keyrings/docker.gpg
+
+- name: Add Docker apt repository
+  become: true
+  apt_repository:
+    repo:  deb [arch={{ arch-results }} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ release-results }} stable
+    state: present
+
+- name: Install containerd
+  become: true
+  apt:
+    state: present
+    update_cache: yes
+    name: "containerd.io"
