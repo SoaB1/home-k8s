@@ -33,3 +33,19 @@
     state: present
     update_cache: yes
     name: "containerd.io"
+
+- name: Create containerd config directory
+  become: true
+  file:
+    path: /etc/containerd
+    state: directory
+
+- name: Configure containerd
+  become: true
+  shell: containerd config default | sudo tee /etc/containerd/config.toml
+
+- name: Restart containerd systemd
+  become: true
+  systemd:
+    name: containerd.service
+    state: restarted
