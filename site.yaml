@@ -8,3 +8,23 @@
   hosts: k8s-nodes
   roles:
     - 02-copy-ssh-key
+
+- name: 03-configure-node
+  hosts: k8s-nodes
+  roles:
+    - 03-configure-node
+
+- name: 04-install-cri
+  hosts: k8s-nodes
+  roles:
+    - 04-install-cri
+
+- name: 05-install-kubeadm
+  hosts: k8s-nodes
+  roles:
+    - 05-install-kubeadm
+
+- name: 06-disable-swap
+  hosts: k8s-nodes
+  roles:
+    - 06-disable-swap
