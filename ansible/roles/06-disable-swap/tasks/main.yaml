@@ -2,3 +2,14 @@
 - name: Disable swap
   shell:
     cmd: swapoff -a
+
+- name: Configure CRI endpoints
+  blockinfile:
+    path: /etc/crictl.yaml
+    block: |
+      'runtime-endpoint: unix:///var/run/containerd/containerd.sock'
+      'image-endpoint: unix:///var/run/containerd/containerd.sock'
+      'timeout: 10'
+    marker: ""
+    create: yes
+    state: present
