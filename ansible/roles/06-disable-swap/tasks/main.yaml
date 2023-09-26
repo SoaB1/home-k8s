@@ -1,0 +1,4 @@
+---
+- name: Disable swap
+  shell:
+    cmd: swapoff -a
