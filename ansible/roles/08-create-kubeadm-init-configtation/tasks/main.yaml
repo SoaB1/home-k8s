@@ -1,0 +1,5 @@
+---
+- name: Register kubeadm token
+  shell:
+    cmd: echo "$(openssl rand -hex 3).$(openssl rand -hex 8)"
+  register: k8s_bootstarp_token
