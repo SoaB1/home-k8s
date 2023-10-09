@@ -3,3 +3,33 @@
   shell:
     cmd: echo "$(openssl rand -hex 3).$(openssl rand -hex 8)"
   register: k8s_bootstarp_token
+
+- name: Create kubeadm init file
+  become: true
+  blockinfile:
+    path: '"{{ ansible_env.HOME }}"/init_kubeadm.yaml'
+    block: |
+      apiVersion: kubeadm.k8s.io/v1beta3
+      kind: InitConfiguration
+      bootstrapTokens:
+      - token: "{{ k8s_bootstarp_token.stdout }}"
+        description: "kubeadm bootstrap token"
+        ttl: "24h"
+      nodeRegistration:
+        criSocket: "unix:///var/run/containerd/containerd.sock"
+      ---
+      apiVersion: kubeadm.k8s.io/v1beta3
+      kind: ClusterConfiguration
+      networking:
+        serviceSubnet: "10.96.0.0/16"
+        podSubnet: "10.128.0.0/16"
+      kubernetesVersion: "v1.27.1"
+      controlPlaneEndpoint: "192.168.0.80:8443"
+      ---
+      apiVersion: kubelet.config.k8s.io/v1beta1
+      kind: KubeletConfiguration
+      cgroupDriver: "systemd"
+      protectKernelDefaults: true
+    marker: ""
+    create: yes
+    state: present
