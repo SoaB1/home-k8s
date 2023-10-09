@@ -1,9 +1,11 @@
 ---
 - name: Disable swap
+  become: true
   shell:
     cmd: swapoff -a
 
 - name: Configure CRI endpoints
+  become: true
   blockinfile:
     path: /etc/crictl.yaml
     block: |
