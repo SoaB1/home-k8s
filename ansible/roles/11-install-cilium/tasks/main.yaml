@@ -1,0 +1,5 @@
+---
+- name: Get Cilium version
+  shell:
+    cmd: curl -s https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt
+  register: cilium-version
