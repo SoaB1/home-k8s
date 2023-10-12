@@ -38,3 +38,4 @@
     - "apt-transport-https"
     - "curl"
     - "gnupg2"
+    - "git"
