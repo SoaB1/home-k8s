@@ -3,3 +3,27 @@
   shell:
     cmd: curl -s https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt
   register: cilium-version
+
+- name: Download Cilium CLI SHA-256
+  get_url:
+    url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium-version }}/cilium-linux-{{ arch-results }}.tar.gz.sha256sum"
+    dest: /tmp/
+
+- name: Download Cilium CLI
+  get_url:
+    url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium-version }}/cilium-linux-{{ arch-results }}.tar.gz"
+    dest: /tmp/
+
+- name: Check sum Cilium CLI
+  shell:
+    cmd: "sha256sum --check cilium-linux-{{ arch-results }}.tar.gz.sha256sum"
+
+- name: Unpackage Cilium CLI
+  become: true
+  unarchive:
+    src: "/tmp/cilium-linux-{{ arch-results }}.tar.gz"
+    dest: /usr/local/bin
+
+- name: Install Cilium for k8s cluster
+  shell:
+    cmd: cilium install cilium install --version=v1.12.0
