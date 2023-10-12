@@ -1,0 +1,5 @@
+---
+- name: Install Kuberentes
+  become: true
+  shell:
+    cmd: kubeadm init --config "{{ ansible_env.HOME }}"/init_kubeadm.yaml --skip-phases=addon/kube-proxy --ignore-preflight-errors=NumCPU,Mem
