@@ -1,0 +1,5 @@
+---
+- name: Add Argo repository
+  kubernetes.core.helm_repository:
+    name: argo
+    repo_url: "https://argoproj.github.io/argo-helm"
