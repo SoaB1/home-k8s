@@ -3,3 +3,9 @@
   kubernetes.core.helm_repository:
     name: argo
     repo_url: "https://argoproj.github.io/argo-helm"
+
+- name: Deploy ArgoCD
+  kubernetes.core.helm:
+    name: argocd
+    chart_version: 5.35.0
+    release_namespace: argocd
