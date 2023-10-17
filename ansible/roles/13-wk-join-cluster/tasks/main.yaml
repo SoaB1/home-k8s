@@ -1,0 +1,32 @@
+---
+- name: Create config for worker nodes
+  blockinfile:
+    path: '"{{ ansible_env.HOME }}"/join_kubeadm_wk.yaml'
+    block: |
+      apiVersion: kubelet.config.k8s.io/v1beta1
+      kind: KubeletConfiguration
+      cgroupDriver: "systemd"
+      protectKernelDefaults: true
+      ---
+      apiVersion: kubeadm.k8s.io/v1beta3
+      kind: JoinConfiguration
+      nodeRegistration:
+        criSocket: "unix:///var/run/containerd/containerd.sock"
+      discovery:
+        bootstrapToken:
+          apiServerEndpoint: "192.168.0.80:8443"
+          token: "{{ k8s_bootstarp_token.stdout }}"
+          unsafeSkipCAVerification: true
+    marker: ""
+    create: yes
+    state: present
+
+- name: Copy kubeadm config for wk nodes
+  copy:
+    src: '"{{ ansible_env.HOME }}"/join_kubeadm_wk.yaml'
+    dest: '/tmp/join_kubeadm_wk.yaml'
+
+- name: Join cluster for wk nodes
+  become: true
+  shell:
+    cmd: kubeadm join --config /tmp/join_kubeadm_wk.yaml
