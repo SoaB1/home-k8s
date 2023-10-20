@@ -1,11 +1,14 @@
 - name: Create Directory ~/.ssh
   become: true
-  file: dest=/home/k8s-user/.ssh state=directory state=directory owner=k8s-user group=k8s-user
+  ansible.builtin.file:
+    dest: /home/k8s-user/.ssh
+    state: directory
+    mode: "0700"
+    owner: k8s-user
+    group: k8s-user
 
 - name: Generate SSH Key
   become: true
-  openssh_keypair: 
+  community.crypto.openssh_keypair:
     path: /home/k8s-user/.ssh/id_ed25519
     type: ed25519
-
-

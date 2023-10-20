@@ -8,7 +8,7 @@
     state: present
     sysctl_set: true
     reload: false
-  loop: 
+  loop:
     - { key: "net.bridge.bridge-nf-call-iptables", value: "1" }
     - { key: "net.bridge.bridge-nf-call-ip6tables", value: "1" }
     - { key: "vm.overcommit_memory", value: "1" }
@@ -21,33 +21,34 @@
 
 - name: Add Kubernetes GPG key
   become: true
-  get_url:
+  ansible.builtin.get_url:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     dest: /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+    mode: "0644"
 
 - name: Add Kubernetes apt repository
   become: true
-  apt_repository:
-    repo:  deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
     state: present
 
 - name: Install Kubernetes packages
   become: true
-  apt:
+  ansible.builtin.apt:
     state: present
-    update_cache: yes
+    update_cache: "yes"
     name: "{{ item.key }}={{ item.value }}"
-  loop: 
+  loop:
     - { key: "kubelet", value: "1.27.1-00" }
     - { key: "kubeadm", value: "1.27.1-00" }
     - { key: "kubectl", value: "1.27.1-00" }
 
 - name: Hold Kubernetes packages
   become: true
-  dpkg_secletions:
+  ansible.builtin.dpkg_selections:
     name: "{{ item }}"
     selection: hold
-  with_items: 
+  with_items:
     - "kubelet"
     - "kubeadm"
     - "kubectl"
