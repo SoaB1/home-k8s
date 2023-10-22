@@ -1,30 +1,64 @@
----
 - name: 01-generate-ssh-key
-  hosts: k8s-ansible-leader-host
+  hosts: k8s_ansible_leader_host
   roles:
     - 01-generate-ssh-key
 
 - name: 02-copy-ssh-key
-  hosts: k8s-nodes
+  hosts: all
   roles:
     - 02-copy-ssh-key
 
 - name: 03-configure-node
-  hosts: k8s-nodes
+  hosts: all
   roles:
     - 03-configure-node
 
 - name: 04-install-cri
-  hosts: k8s-nodes
+  hosts: all
   roles:
     - 04-install-cri
 
 - name: 05-install-kubeadm
-  hosts: k8s-nodes
+  hosts: all
   roles:
     - 05-install-kubeadm
 
 - name: 06-disable-swap
-  hosts: k8s-nodes
+  hosts: all
   roles:
     - 06-disable-swap
+
+- name: 07-pull-k8s-images
+  hosts: k8s_ansible_leader_host
+  roles:
+    - 07-pull-k8s-images
+
+- name: 08-create-kubeadm-init-configtation
+  hosts: k8s_ansible_leader_host
+  roles:
+    - 08-create-kubeadm-init-configtation
+
+- name: 09-install-kubernetes
+  hosts: k8s_ansible_leader_host
+  roles:
+    - 09-install-kubernetes
+
+- name: 10-install-helm
+  hosts: k8s_ansible_leader_host
+  roles:
+    - 10-install-helm
+
+- name: 11-install-cilium
+  hosts: k8s_ansible_leader_host
+  roles:
+    - 11-install-cilium
+
+- name: 12-install-argocd
+  hosts: k8s_ansible_leader_host
+  roles:
+    - 12-install-argocd
+
+- name: 13-wk-join-cluster
+  hosts: k8s_ansible_worker_hosts
+  roles:
+    - 13-wk-join-cluster
