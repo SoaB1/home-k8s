@@ -37,11 +37,11 @@
   ansible.builtin.apt:
     state: present
     update_cache: "yes"
-    name: "{{ item.key }}={{ item.value }}"
-  loop:
-    - { key: "kubelet", value: "1.27.1-00" }
-    - { key: "kubeadm", value: "1.27.1-00" }
-    - { key: "kubectl", value: "1.27.1-00" }
+    name: "{{ item }}={{ k8s_apt_version }}"
+  with_items:
+    - "kubelet"
+    - "kubeadm"
+    - "kubectl"
 
 - name: Hold Kubernetes packages
   become: true
