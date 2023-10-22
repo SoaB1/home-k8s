@@ -1,0 +1,44 @@
+---
+- name: Configure modules conf
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/modules-load.d/containerd.conf
+    line: "{{ item }}"
+  with_items:
+    - "overlay"
+    - "br_netfilter"
+
+- name: Add modules
+  become: true
+  ansible.builtin.shell:
+    cmd: |
+      modprobe overlay
+      modprobe br_netfilter
+  register: modprobe_result
+  changed_when: modprobe_result.rc != 0
+
+- name: Configure Kernel
+  become: true
+  ansible.posix.sysctl:
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    sysctl_set: true
+    reload: false
+  loop:
+    - { key: "net.bridge.bridge-nf-call-iptables", value: "1" }
+    - { key: "net.bridge.bridge-nf-call-ip6tables", value: "1" }
+    - { key: "net.ipv4.ip_forward", value: "1" }
+
+- name: Install dependency
+  become: true
+  ansible.builtin.apt:
+    state: present
+    update_cache: "yes"
+    name: "{{ item }}"
+  with_items:
+    - "apt-transport-https"
+    - "curl"
+    - "gnupg2"
+    - "git"

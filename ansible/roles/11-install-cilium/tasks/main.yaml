@@ -1,0 +1,32 @@
+---
+- name: Get Cilium version
+  ansible.builtin.uri:
+    url: https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt
+    return_content: "yes"
+  register: cilium_cli_version
+
+- name: Download Cilium CLI SHA-256
+  ansible.builtin.get_url:
+    url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version }}/cilium-linux-{{ arch_results }}.tar.gz.sha256sum"
+    dest: /tmp/
+    mode: "0755"
+
+- name: Download Cilium CLI
+  ansible.builtin.get_url:
+    url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version }}/cilium-linux-{{ arch_results }}.tar.gz"
+    dest: /tmp/
+    mode: "0755"
+
+- name: Check sum Cilium CLI
+  ansible.builtin.command: "sha256sum --check cilium-linux-{{ arch_results }}.tar.gz.sha256sum"
+  changed_when: false
+
+- name: Unpackage Cilium CLI
+  become: true
+  ansible.builtin.unarchive:
+    src: "/tmp/cilium-linux-{{ arch_results }}.tar.gz"
+    dest: /usr/local/bin
+
+- name: Install Cilium for k8s cluster
+  ansible.builtin.command: "cilium install cilium install --version={{ cilium_version }}"
+  changed_when: false

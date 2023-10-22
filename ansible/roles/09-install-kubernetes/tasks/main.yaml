@@ -1,0 +1,13 @@
+---
+- name: Install Kuberentes
+  become: true
+  ansible.builtin.command: kubeadm init --config "{{ ansible_env.HOME }}"/init_kubeadm.yaml --skip-phases=addon/kube-proxy --ignore-preflight-errors=NumCPU,Mem
+  changed_when: false
+
+- name: Copy a kube-config
+  ansible.builtin.copy:
+    dest: '"{{ ansible_env.HOME }}"/.kube/config'
+    src: /etc/kubernetes/admin.conf
+    mode: "0664"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"

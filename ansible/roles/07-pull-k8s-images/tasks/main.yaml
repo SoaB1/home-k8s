@@ -1,0 +1,5 @@
+---
+- name: Pull k8s images
+  become: true
+  ansible.builtin.command: kubeadm config images pull
+  changed_when: false
