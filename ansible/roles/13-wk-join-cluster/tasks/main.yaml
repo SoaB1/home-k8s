@@ -14,7 +14,7 @@
         criSocket: "unix:///var/run/containerd/containerd.sock"
       discovery:
         bootstrapToken:
-          apiServerEndpoint: "192.168.0.80:8443"
+          apiServerEndpoint: "{{ k8s_cp_endpoint_vip }}:8443"
           token: "{{ k8s_bootstarp_token.stdout }}"
           unsafeSkipCAVerification: true
     marker: ""
