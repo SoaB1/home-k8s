@@ -28,5 +28,5 @@
     dest: /usr/local/bin
 
 - name: Install Cilium for k8s cluster
-  ansible.builtin.command: cilium install cilium install --version=v1.12.0
+  ansible.builtin.command: "cilium install cilium install --version={{ cilium_version }}"
   changed_when: false
