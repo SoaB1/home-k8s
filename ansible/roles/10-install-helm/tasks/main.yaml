@@ -1,4 +1,10 @@
 ---
+- name: Get a install script
+  ansible.builtin.uri:
+    url: https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+    return_content: "yes"
+  register: get_helm_script
+
 - name: Install Helm CLI
-  shell:
-    cmd: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+  ansible.builtin.shell: "{{ get_helm_script }}" # noqa command-instead-of-shell
+  changed_when: false

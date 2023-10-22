@@ -1,12 +1,12 @@
 ---
 - name: Register kubeadm token
-  shell:
-    cmd: echo "$(openssl rand -hex 3).$(openssl rand -hex 8)"
+  ansible.builtin.command: echo "$(openssl rand -hex 3).$(openssl rand -hex 8)"
   register: k8s_bootstarp_token
+  changed_when: false
 
 - name: Create kubeadm init file
   become: true
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: '"{{ ansible_env.HOME }}"/init_kubeadm.yaml'
     block: |
       apiVersion: kubeadm.k8s.io/v1beta3
@@ -31,5 +31,6 @@
       cgroupDriver: "systemd"
       protectKernelDefaults: true
     marker: ""
-    create: yes
+    create: "yes"
     state: present
+    mode: "0755"
