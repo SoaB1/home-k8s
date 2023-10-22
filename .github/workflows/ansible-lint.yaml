@@ -16,4 +16,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ansible/ansible-lint@main
         with:
-          working_directory: ansible/site.yaml
+          working_directory: ./ansible
