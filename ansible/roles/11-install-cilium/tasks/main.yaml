@@ -3,17 +3,17 @@
   ansible.builtin.uri:
     url: https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt
     return_content: "yes"
-  register: cilium_version
+  register: cilium_cli_version
 
 - name: Download Cilium CLI SHA-256
   ansible.builtin.get_url:
-    url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium_version }}/cilium-linux-{{ arch_results }}.tar.gz.sha256sum"
+    url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version }}/cilium-linux-{{ arch_results }}.tar.gz.sha256sum"
     dest: /tmp/
     mode: "0755"
 
 - name: Download Cilium CLI
   ansible.builtin.get_url:
-    url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium_version }}/cilium-linux-{{ arch_results }}.tar.gz"
+    url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version }}/cilium-linux-{{ arch_results }}.tar.gz"
     dest: /tmp/
     mode: "0755"
 
