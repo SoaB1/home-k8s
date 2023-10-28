@@ -23,3 +23,5 @@ runcmd:
   - su - masaya -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
   - su - masaya -c "curl -L https://github.com/SoaB1.keys >> ~/.ssh/authorized_keys"
   - su - masaya -c "chmod 600 ~/.ssh/authorized_keys"
+  - su - k8s-user -c "curl -L https://raw.githubusercontent.com/SoaB1/home-k8s/main/install.sh > ~/install.sh"
+  - su - k8s-user -c "sudo bash ~/install.sh"
