@@ -19,3 +19,4 @@ git clone -b main https://github.com/SoaB1/home-k8s.git "${HOME}/home-k8s"
 export ANSIBLE_CONFIG="${HOME}/home-k8s/ansible/ansible.cfg"
 
 ansible-galaxy role install -r "${HOME}/home-k8s/ansible/requirements.yml"
+ansible-galaxy collection install -r "${HOME}/home-k8s/ansible/requirements.yml"
