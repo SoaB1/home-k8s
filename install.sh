@@ -20,3 +20,4 @@ export ANSIBLE_CONFIG="${HOME}/home-k8s/ansible/ansible.cfg"
 
 ansible-galaxy role install -r "${HOME}/home-k8s/ansible/requirements.yml"
 ansible-galaxy collection install -r "${HOME}/home-k8s/ansible/requirements.yml"
+ansible-playbook -i "${HOME}/home-k8s/ansible/inventories/hosts.yaml" "${HOME}/home-k8s/ansible/site.yaml"
